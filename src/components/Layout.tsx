@@ -1,18 +1,16 @@
-import type { Metadata } from 'next';
-import './globals.css';
-import Layout from '@/components/Layout';
+import React from 'react';
 
-export const metadata: Metadata = {
-  title: 'My Portfolio',
-  description: 'Welcome to my personal portfolio!',
+type LayoutProps = {
+    children: React.ReactNode;
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body>
-        <Layout>{children}</Layout>
-      </body>
-    </html>
-  );
-}
+const Layout: React.FC<LayoutProps> = ({ children }) => {
+    return (
+        <div className="layout-container">
+            {/* You can add header, sidebar, footer here */}
+            {children}
+        </div>
+    );
+};
+
+export default Layout;

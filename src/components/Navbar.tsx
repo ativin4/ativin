@@ -1,38 +1,30 @@
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
-
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/projects" },
-  { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/contact" },
-];
+import Link from 'next/link';
 
 export default function Navbar() {
-  const pathname = usePathname();
-  return (
-    <nav className="bg-gray-800 text-white p-4">
-      <ul className="flex gap-6">
-        {navItems.map((item) => (
-          <li key={item.href}>
-            <Link
-              href={item.href}
-              className={`hover:text-blue-400 transition-colors ${
-                pathname === item.href ? "text-blue-400 font-bold" : ""
-              }`}
-            >
-              {item.label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
+    return (
+        <nav className="bg-white shadow-md">
+            <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div className="flex space-x-8">
+                    <Link
+                        href="/"
+                        className="text-gray-700 font-semibold hover:text-blue-600 transition-colors duration-200"
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        href="/about"
+                        className="text-gray-700 font-semibold hover:text-blue-600 transition-colors duration-200"
+                    >
+                        About
+                    </Link>
+                    <Link
+                        href="/projects"
+                        className="text-gray-700 font-semibold hover:text-blue-600 transition-colors duration-200"
+                    >
+                        Projects
+                    </Link>
+                </div>
+            </div>
+        </nav>
+    );
 }
