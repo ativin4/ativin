@@ -1,19 +1,19 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import dynamic from "next/dynamic";
 import problems from "@/data/problems.json";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 interface DSAProblemPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-const DSAProblemPage = ({ params }: DSAProblemPageProps) => {
+const DSAProblemPage = (props: DSAProblemPageProps) => {
+  const params = use(props.params);
   const problem = problems.find((p) => p.id === params.id);
 
   const [code, setCode] = useState<string>("");
-  const [output, setOutput] = useState<string>("");
   const [results, setResults] = useState<{ pass: boolean; actual: any; expected: any; input: any; logs: any[]; }[]>([]);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const DSAProblemPage = ({ params }: DSAProblemPageProps) => {
           // Capture console.log
           const userConsole = { log: (...args: any[]) => logs.push(args.join(" ")) };
           // Run the function with test input
-          actual = runner(userConsole, test.input);
+          actual = runner(userConsole, [test.input]);
         } catch (e: any) {
           actual = e?.message || "Error";
         }
@@ -61,9 +61,7 @@ const DSAProblemPage = ({ params }: DSAProblemPageProps) => {
         });
       }
       setResults(newResults);
-      setOutput("Test cases executed.");
     } catch (err: any) {
-      setOutput(err.message);
       setResults([]);
     }
   };
@@ -97,6 +95,14 @@ const DSAProblemPage = ({ params }: DSAProblemPageProps) => {
           value={code}
           onChange={(val) => setCode(val || "")}
           theme="vs-dark"
+          options={{
+            scrollBeyondLastLine: false,
+            lineNumbers: "on",
+            automaticLayout: true,
+            scrollbar: {
+              alwaysConsumeMouseWheel: false,
+            }
+          }}
         />
       </div>
       <button
