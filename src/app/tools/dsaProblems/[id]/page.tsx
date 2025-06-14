@@ -2,6 +2,7 @@
 import React, { useState, useEffect, use } from "react";
 import dynamic from "next/dynamic";
 import problems from "@/data/problems.json";
+import { getStarterCode } from "./utils";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -12,22 +13,30 @@ interface DSAProblemPageProps {
 const DSAProblemPage = (props: DSAProblemPageProps) => {
   const params = use(props.params);
   const problem = problems.find((p) => p.id === params.id);
+  const starterCode = getStarterCode(problem)
 
   const [code, setCode] = useState<string>("");
-  const [results, setResults] = useState<{ pass: boolean; actual: any; expected: any; input: any; logs: any[]; }[]>([]);
+  useEffect(() => {
+    if (problem) {
+      const saved = typeof window !== 'undefined' ? localStorage.getItem(`dsa_code_${problem.id}`) : null;
+      setCode(saved ?? starterCode);
+    }
+  }, [problem, starterCode]);
 
   useEffect(() => {
     if (problem) {
-      setCode(problem.starterCode);
+      localStorage.setItem(`dsa_code_${problem.id}`, code);
     }
-  }, [problem]);
+  }, [code, problem]);
+
+  const [results, setResults] = useState<{ pass: boolean; actual: any; expected: any; input: any; logs: any[]; }[]>([]);
 
   const handleRun = () => {
     if (!problem?.testCases) return;
     const newResults: { pass: boolean; actual: any; expected: any; input: any[]; logs: string[] }[] = [];
 
     // Extract the first function name from the user code
-    const match = code.match(/function\s+([a-zA-Z0-9_]+)|var\s+([a-zA-Z0-9_]+)\s*=\s*function|const\s+([a-zA-Z0-9_]+)\s*=\s*\(/);
+    const match = code.match(/$function\s+([a-zA-Z0-9_]+)|var\s+([a-zA-Z0-9_]+)\s*=\s*function|const\s+([a-zA-Z0-9_]+)\s*=\s*\(/);
     const functionName = match?.[1] || match?.[2] || match?.[3];
 
     try {
@@ -40,15 +49,24 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
             "console",
             "input",
             `
+              ${problem.customTypeDefinitions ? Object.values(problem.customTypeDefinitions).join(";"): ""}
               ${code}
               if (typeof ${functionName} !== 'function') throw new Error('Function not found');
-              return ${functionName}.apply(null, input);
+              const argumentTypes = ${JSON.stringify(problem.arguments.map(arg => arg.type))};
+              const wrappedInput = input.map((arg, index) => {
+                if (argumentTypes[index] === 'number') return Number(arg);
+                if (argumentTypes[index] === 'string') return String(arg);
+                if (argumentTypes[index] === 'boolean') return Boolean(arg);
+                if (argumentTypes[index] === 'object') return JSON.parse(arg);
+                return new (eval(argumentTypes[index]))(arg);
+              });
+              return ${functionName}.apply(null, wrappedInput);
             `
           );
           // Capture console.log
           const userConsole = { log: (...args: any[]) => logs.push(args.join(" ")) };
           // Run the function with test input
-          actual = runner(userConsole, [test.input]);
+          actual = runner(userConsole, test.input);
         } catch (e: any) {
           actual = e?.message || "Error";
         }
@@ -91,7 +109,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
         <MonacoEditor
           height="100%"
           defaultLanguage="javascript"
-          defaultValue={problem.starterCode}
+          defaultValue={starterCode}
           value={code}
           onChange={(val) => setCode(val || "")}
           theme="vs-dark"
@@ -107,7 +125,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
       </div>
       <button
         onClick={handleRun}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition mb-4"
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition mb-4 clickable cursor-pointer"
       >
         Run Code
       </button>
