@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio and Interactive Tools
+
+A modern web application built with Next.js that combines a personal portfolio with interactive development tools and a blog platform.
+
+## Features
+
+### DSA Problem Runner
+- Interactive coding environment similar to LeetCode
+- Monaco editor integration with syntax highlighting
+- Custom type definitions support
+- Automatic test case runner
+- Code persistence using localStorage
+- Visual feedback for interactions
 
 ## Getting Started
 
-First, run the development server:
-
+1. Install dependencies:
 ```bash
-npm run dev
-# or
+yarn install
+```
+
+2. Run the development server:
+```bash
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/
+│   └── tools/
+│       └── dsaProblems/
+│           └── [id]/         # Dynamic routes for DSA problems
+│               ├── page.tsx  # Problem runner interface
+│               └── utils.ts  # Helper functions and types
+├── data/
+│   └── problems.json        # DSA problem definitions
+└── components/              # Reusable UI components
+```
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js](https://nextjs.org) - React framework for production
+- [Monaco Editor](https://microsoft.github.io/monaco-editor/) - Code editor
+- TypeScript - Type safety and developer experience
+- LocalStorage - Client-side data persistence
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Upcoming Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Expanded collection of DSA problems
+- Personal tools section with developer utilities
+- Blog section for sharing insights and experiences
+- Enhanced UI/UX with modern design patterns
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The project uses TypeScript and follows modern React patterns with Next.js 13+ features. Key components:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Dynamic routes for problem pages
+- Custom type definitions support in the code runner
+- Client-side state management with localStorage
+- Interactive UI elements with visual feedback
+
