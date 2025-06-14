@@ -23,6 +23,12 @@ export default function Navbar() {
                     >
                         Projects
                     </Link>
+                    <Link
+                        href="/tools/dsaProblems"
+                        className="text-gray-700 font-semibold hover:text-blue-600 transition-colors duration-200"
+                    >
+                        DSA Problems
+                    </Link>
                 </div>
             </div>
         </nav>

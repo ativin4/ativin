@@ -1,0 +1,20 @@
+[
+  {
+    "id": "leftmost-column",
+    "title": "Leftmost Column with at Least a One",
+    "difficulty": "Medium",
+    "description": "You are given a binary matrix with rows sorted in non-decreasing order.\nImplement a function to return the index of the leftmost column with at least a 1 in it.\nIf no such column exists, return -1.\n\nThe matrix is only accessible via a BinaryMatrix interface with the following methods:\n- get(row, col): returns the value at that cell (0 or 1)\n- dimensions(): returns [rows, cols]",
+    "starterCode": "var leftMostColumnWithOne = function(binaryMatrix) {\n  // your code here\n};\n\nclass BinaryMatrix {\n  constructor(matrix) {\n    this.matrix = matrix;\n  }\n  get(row, col) {\n    return this.matrix[row][col];\n  }\n  dimensions() {\n    return [this.matrix.length, this.matrix[0].length];\n  }\n}\n\nconst matrix = new BinaryMatrix([\n  [0, 0, 0, 1],\n  [0, 0, 1, 1],\n  [0, 0, 0, 0]\n]);\n\nconsole.log(leftMostColumnWithOne(matrix)); // Expected: 2",
+    "functionName": "leftMostColumnWithOne",
+    "testCases": [
+      {
+        "input": [[0, 0, 0, 1], [0, 0, 1, 1], [0, 0, 0, 0]],
+        "expected": 2
+      },
+      {
+        "input": [[0, 0], [1, 1]],
+        "expected": 0
+      }
+    ]
+  }
+]
