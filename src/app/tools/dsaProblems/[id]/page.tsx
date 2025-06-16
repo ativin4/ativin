@@ -71,7 +71,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
         });
       }
       setResults(newResults);
-    } catch (_) {
+    } catch {
       setResults([]);
     }
   };
