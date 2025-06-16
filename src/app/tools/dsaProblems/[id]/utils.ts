@@ -11,7 +11,6 @@ interface Problem {
 }
 
 const primitiveTypes = ['bigint', 'number', 'string', 'boolean', 'object', 'string[]', 'number[]', 'boolean[]', 'object[]'] as const;
-type PrimitiveType = typeof primitiveTypes[number];
 
 interface RunUserCodeParams {
     code: string;

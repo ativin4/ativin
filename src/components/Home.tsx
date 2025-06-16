@@ -184,7 +184,7 @@ export default function HomePage() {
         <div className="w-full min-h-screen bg-gradient-to-b from-gray-900 to-black text-white">
             <div className="absolute top-10 left-0 w-full p-8 z-10">
                 <h1 className="text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500">
-                    Hi, I'm Atishay Jain
+                    Hi, I&apos;m Atishay Jain
                 </h1>
                 <p className="text-xl text-gray-300 max-w-2xl">
                     Full Stack Engineer passionate about building intuitive tools and impactful platforms.

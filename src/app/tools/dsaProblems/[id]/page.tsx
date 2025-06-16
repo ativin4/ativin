@@ -47,7 +47,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
     try {
       for (const test of problem.testCases) {
         let actual: TestResult['actual'];
-        let logs: string[] = [];
+        const logs: string[] = [];
         try {
           // Prepare the sandboxed function
           const runner = new Function(
@@ -71,7 +71,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
         });
       }
       setResults(newResults);
-    } catch (err: any) {
+    } catch (_) {
       setResults([]);
     }
   };
