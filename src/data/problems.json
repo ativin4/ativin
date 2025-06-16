@@ -26,5 +26,112 @@
         "expected": 0
       }
     ]
+  },
+  {
+    "id": "alien-dictionary",
+    "title": "Alien Dictionary",
+    "difficulty": "Hard",
+    "description": "There is a new alien language which uses the Latin alphabet. The order among letters is unknown to you. You receive a list of non-empty words from this language, **sorted lexicographically** according to alien rules. Derive a possible character order of the language.\n\nReturn any valid ordering of characters in the alien language. If the ordering is invalid or cannot be determined, return an empty string.\n\n**Notes:**\n- You may assume all letters are lowercase.\n- If `a` is a prefix of `b`, then `a` must come before `b` in the input list.\n- If the order is invalid (e.g. contradicting rules), return `\"\"`.\n- If multiple valid orders exist, return any.\n\n**Example 1:**\nInput: [\"wrt\",\"wrf\",\"er\",\"ett\",\"rftt\"]\nOutput: \"wertf\"\n\n**Example 2:**\nInput: [\"z\",\"x\"]\nOutput: \"zx\"\n\n**Example 3:**\nInput: [\"z\",\"x\",\"z\"]\nOutput: \"\" (invalid ordering)",
+    "functionName": "alienOrder",
+    "arguments": [
+      {
+        "name": "words",
+        "type": "string[]",
+        "description": "List of words sorted in the alien language's lexicographical order."
+      }
+    ],
+    "returnType": "string",
+    "testCases": [
+      {
+        "input": [["wrt","wrf","er","ett","rftt"]],
+        "expected": "wertf"
+      },
+      {
+        "input": [["z","x"]],
+        "expected": "zx"
+      },
+      {
+        "input": [["z","x","z"]],
+        "expected": ""
+      }
+    ]
+  },
+  {
+    "id": "number-of-islands-ii",
+    "title": "Number of Islands II",
+    "difficulty": "Hard",
+    "description": "You are given an empty 2D grid with `m` rows and `n` columns, initially filled with water (0). We may perform a sequence of positions to add land (set grid[r][c] = 1). After each addition, return the number of islands.\n\nAn island is a group of adjacent land cells connected horizontally or vertically.\n\n**Example:**\nInput:\n```\nm = 3, n = 3,\npositions = [[0,0],[0,1],[1,2],[2,1]]\n```\nOutput: `[1,1,2,3]`\n\n**Explanation:**\nAfter adding land at (0,0) -> 1 island\n(0,1) -> cells (0,0) and (0,1) connect -> 1 island\n(1,2) -> new isolated cell -> 2 islands\n(2,1) -> new isolated cell -> 3 islands",
+    "functionName": "numIslands2",
+    "arguments": [
+      {
+        "name": "m",
+        "type": "number",
+        "description": "Number of rows."
+      },
+      {
+        "name": "n",
+        "type": "number",
+        "description": "Number of columns."
+      },
+      {
+        "name": "positions",
+        "type": "number[][]",
+        "description": "List of positions to add land."
+      }
+    ],
+    "returnType": "number[]",
+    "testCases": [
+      {
+        "input": [3, 3, [[0,0],[0,1],[1,2],[2,1]]],
+        "expected": [1, 1, 2, 3]
+      },
+      {
+        "input": [1, 1, [[0,0]]],
+        "expected": [1]
+      }
+    ]
+  },
+  {
+    "id": "design-hit-counter",
+    "title": "Design Hit Counter",
+    "difficulty": "Medium",
+    "description": "Design a hit counter which counts the number of hits received in the past 5 minutes (the past 300 seconds).\n\nYour system should support:\n- `void hit(int timestamp)`: record a hit at given timestamp (in seconds granularity).\n- `int getHits(int timestamp)`: return the number of hits in the past 300 seconds (inclusive of current timestamp).\n\nAssume timestamps are non-decreasing when called.",
+    "constructorName": "HitCounter",
+    "returnType": "HitCounter",
+    "testCases": [
+      {
+        "input": [["HitCounter", "hit", "hit", "hit", "getHits", "hit", "getHits", "getHits"], [[], [1], [2], [3], [4], [300], [300], [301]]],
+        "expected": [null, null, null, null, 3, null, 4, 3]
+      },
+      {
+        "input": [["HitCounter", "hit", "getHits"], [[], [1], [300]]],
+        "expected": [null, null, 1]
+      }
+    ]
+  },
+  {
+    "id": "bomb-enemy",
+    "title": "Bomb Enemy",
+    "difficulty": "Medium",
+    "description": "Given a 2D grid, each cell is `'W'` (wall), `'E'` (enemy), or `'0'` (empty), return the maximum number of enemies you can eliminate by placing a bomb in an empty cell. The bomb kills all enemies in the same row and column until a wall blocks it.\n\n**Example:**\n```\nGrid:\n[['0','E','0','0'],\n ['E','0','W','E'],\n ['0','E','0','0']]\n```\nOutput: `3` (placing bomb at (1,1) kills 3 enemies)",
+    "functionName": "maxKilledEnemies",
+    "arguments": [
+      {
+        "name": "grid",
+        "type": "string[][]",
+        "description": "2D grid of 'W', 'E', and '0'."
+      }
+    ],
+    "returnType": "number",
+    "testCases": [
+      {
+        "input": [[["0","E","0","0"],["E","0","W","E"],["0","E","0","0"]]],
+        "expected": 3
+      },
+      {
+        "input": [[["0"]]],
+        "expected": 0
+      }
+    ]
   }
 ]

@@ -2,7 +2,7 @@
 import React, { useState, useEffect, use } from "react";
 import dynamic from "next/dynamic";
 import problems from "@/data/problems.json";
-import { getStarterCode } from "./utils";
+import { getStarterCode, runUserCode } from "./utils";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -19,7 +19,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
   useEffect(() => {
     if (problem) {
       const saved = typeof window !== 'undefined' ? localStorage.getItem(`dsa_code_${problem.id}`) : null;
-      setCode(saved ?? starterCode);
+      setCode(saved || starterCode);
     }
   }, [problem, starterCode]);
 
@@ -35,10 +35,6 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
     if (!problem?.testCases) return;
     const newResults: { pass: boolean; actual: any; expected: any; input: any[]; logs: string[] }[] = [];
 
-    // Extract the first function name from the user code
-    const match = code.match(/$function\s+([a-zA-Z0-9_]+)|var\s+([a-zA-Z0-9_]+)\s*=\s*function|const\s+([a-zA-Z0-9_]+)\s*=\s*\(/);
-    const functionName = match?.[1] || match?.[2] || match?.[3];
-
     try {
       for (const test of problem.testCases) {
         let actual;
@@ -48,20 +44,7 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
           const runner = new Function(
             "console",
             "input",
-            `
-              ${problem.customTypeDefinitions ? Object.values(problem.customTypeDefinitions).join(";"): ""}
-              ${code}
-              if (typeof ${functionName} !== 'function') throw new Error('Function not found');
-              const argumentTypes = ${JSON.stringify(problem.arguments.map(arg => arg.type))};
-              const wrappedInput = input.map((arg, index) => {
-                if (argumentTypes[index] === 'number') return Number(arg);
-                if (argumentTypes[index] === 'string') return String(arg);
-                if (argumentTypes[index] === 'boolean') return Boolean(arg);
-                if (argumentTypes[index] === 'object') return JSON.parse(arg);
-                return new (eval(argumentTypes[index]))(arg);
-              });
-              return ${functionName}.apply(null, wrappedInput);
-            `
+            runUserCode({code, problem})
           );
           // Capture console.log
           const userConsole = { log: (...args: any[]) => logs.push(args.join(" ")) };

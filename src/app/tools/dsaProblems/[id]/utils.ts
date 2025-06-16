@@ -1,7 +1,8 @@
 interface Problem {
     customTypeDefinitions?: Record<string, string>;
-    arguments: { name: string; type: string }[];
-    functionName: string;
+    arguments?: { name: string; type: string }[];
+    functionName?: string;
+    constructorName?: string;
     returnType: string;
 }
 export const getStarterCode = (problem?: Problem) => {
@@ -22,11 +23,59 @@ export const getStarterCode = (problem?: Problem) => {
         }
     }
     starterCode += "/**\n";
-    problem.arguments.forEach(arg => {
+    problem.arguments?.forEach(arg => {
         starterCode += ` * @param {${arg.type}} ${arg.name}\n`;
     });
     starterCode += ` * @return {${problem.returnType || 'any'}}\n`;
     starterCode += " */\n";
-    starterCode += `var ${problem.functionName} = function(${problem.arguments.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`;
+    starterCode += problem.functionName ? `var ${problem.functionName} = function(${problem.arguments?.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`
+        : `function ${problem.constructorName}(${problem.arguments?.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`;
     return starterCode;
+}
+
+const premitiveTypes = ['bigint', 'number', 'string', 'boolean', 'object', 'string[]', 'number[]', 'boolean[]', 'object[]'];
+
+interface RunUserCodeParams {
+    code: string;
+    problem?: Problem;
+}
+export const runUserCode = ({code, problem}: RunUserCodeParams) => {
+    if (!problem) {
+        return '';
+    }
+    const { functionName, constructorName, customTypeDefinitions, arguments: args } = problem;
+    if (constructorName) {
+        return `
+                ${code}
+                if (typeof ${constructorName} !== 'function') throw new Error('Constructor not found');
+                let classDeclaration;
+                input[0].forEach((method, i) => {
+                    if (method === '${constructorName}'){
+                        classDeclaration = new ${constructorName}(...input[1][i]);
+                        return null;
+                    }
+                    if (typeof classDeclaration[method] === 'function') {
+                        return classDeclaration[method](...input[1][i]);
+                    } 
+                    if (typeof classDeclaration[method] === 'object') {
+                        return classDeclaration[method] = input[1][i];
+                    }
+                    throw new Error('Method not found: ' + method);
+                })
+            `;
+    }
+    return `
+              ${customTypeDefinitions ? Object.values(customTypeDefinitions).join(";"): ""}
+              ${code}
+              if (typeof ${functionName} !== 'function') throw new Error('Function not found');
+              const argumentTypes = ${JSON.stringify(args?.map(arg => arg.type))};
+              const premitiveTypes = ${JSON.stringify(premitiveTypes)};
+              const wrappedInput = input.map((arg, index) => {
+                if (premitiveTypes.includes(argumentTypes[index])) {
+                    return arg;
+                }
+                return new (eval(argumentTypes[index]))(arg);
+              });
+              return ${functionName}.apply(null, wrappedInput);
+            `
 }
