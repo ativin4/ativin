@@ -6,8 +6,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
-        <div className="layout-container">
-            {/* You can add header, sidebar, footer here */}
+        <div className="h-full">
             {children}
         </div>
     );

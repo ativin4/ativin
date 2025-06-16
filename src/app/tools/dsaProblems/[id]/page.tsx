@@ -70,85 +70,131 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
   if (!problem) return <div className="p-6">Problem not found.</div>;
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">{problem.title}</h1>
-      <div
-        className="mb-4 border rounded p-4 bg-gray-800 text-white text-sm whitespace-pre-wrap"
-      >
-        {problem.description}
+    <div className="h-full flex flex-col bg-gray-900 text-gray-100 position-relative">
+      {/* Fixed Header */}
+      <div className="fixed top-16 left-0 right-0 h-16 border-b border-gray-800 bg-gray-900/80 backdrop-blur-sm z-10">
+        <div className="h-full max-w-[1800px] mx-auto px-4 flex items-center justify-between">
+          <h1 className="text-xl font-semibold text-gray-100">{problem.title}</h1>
+          <button
+            onClick={handleRun}
+            className="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Run Code
+          </button>
+        </div>
       </div>
-      <div className="mb-4">
-        <h2 className="font-semibold mb-2">Test Cases:</h2>
-        <ul className="list-disc ml-6">
-          {problem.testCases?.map((test, idx) => (
-            <li key={idx}>
-              <span className="font-mono">Input: {JSON.stringify(test.input)}</span>
-              <span className="ml-2 font-mono">Expected: {JSON.stringify(test.expected)}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="h-[400px] border rounded mb-4">
-        <MonacoEditor
-          height="100%"
-          defaultLanguage="javascript"
-          defaultValue={starterCode}
-          value={code}
-          onChange={(val) => setCode(val || "")}
-          theme="vs-dark"
-          options={{
-            scrollBeyondLastLine: false,
-            lineNumbers: "on",
-            automaticLayout: true,
-            scrollbar: {
-              alwaysConsumeMouseWheel: false,
-            }
-          }}
-        />
-      </div>
-      <button
-        onClick={handleRun}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition mb-4 clickable cursor-pointer"
-      >
-        Run Code
-      </button>
-      <div className="mb-4">
-        {results.length > 0 && (
-          <div>
-            <h2 className="font-semibold mb-2">Results:</h2>
-            <ul>
-              {results.map((res, idx) => (
-                <li key={idx} className={res.pass ? "text-green-500" : "text-red-500"}>
-                  Test {idx + 1}: {res.pass ? "Passed" : "Failed"} | Input: {JSON.stringify(res.input)} | Expected: {JSON.stringify(res.expected)} | Got: {JSON.stringify(res.actual)}
-                </li>
-              ))}
-            </ul>
+
+      {/* Main Content */}
+      <div className="fixed top-32 left-0 right-0 bottom-0 flex gap-4 p-4">
+        {/* Left Side - Description and Test Cases */}
+        <div className="h-full grid grid-rows-[1fr_1fr] gap-4 w-full">
+          {/* Description Section */}
+          <div className="bg-gray-800/50 rounded-lg overflow-auto flex flex-col p-4">
+            <h2 className="text-lg font-semibold mb-4">Problem Description</h2>
+            <div className="text-gray-300 space-y-4 leading-relaxed whitespace-pre-wrap">
+              {problem.description}
+            </div>
           </div>
-        )}
-      </div>
-      <ul>
-        {results.map((res, idx) => (
-          <li key={idx} className={res.pass ? "text-green-500" : "text-red-500"}>
-            <div>
-              Test {idx + 1}: {res.pass ? "Passed" : "Failed"}
-              <br />
-              <span className="font-mono">Input: {JSON.stringify(res.input)}</span>
-              <br />
-              <span className="font-mono">Expected: {JSON.stringify(res.expected)}</span>
-              <br />
-              <span className="font-mono">Got: {JSON.stringify(res.actual)}</span>
-              {res.logs.length > 0 && (
-                <div className="mt-1 text-xs text-gray-400 bg-black rounded p-2">
-                  <div className="font-bold text-white">Console Output:</div>
-                  {res.logs.map((log, i) => (
-                    <div key={i} className="font-mono text-green-400">{log}</div>
+
+          {/* Example Test Cases */}
+          <div className="bg-gray-800/50 rounded-lg overflow-auto flex flex-col p-4">
+            <h2 className="text-lg font-semibold mb-4">Example Test Cases</h2>
+            <div className="space-y-4">
+              {problem.testCases?.map((test, idx) => (
+                <div key={idx} className="bg-gray-800 rounded-lg p-4">
+                  <div className="text-sm font-medium text-gray-400 mb-2">Example {idx + 1}</div>
+                  <div className="font-mono text-sm space-y-2">
+                    <div>Input: <span className="text-blue-400">{JSON.stringify(test.input)}</span></div>
+                    <div>Expected: <span className="text-green-400">{JSON.stringify(test.expected)}</span></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Editor and Results */}
+        <div className="h-full grid grid-rows-[1fr_1fr] gap-4 w-full">
+
+          {/* Editor */}
+          <div className="bg-gray-800/50 rounded-lg overflow-hidden flex flex-col">
+            <MonacoEditor
+              height="100%"
+              defaultLanguage="javascript"
+              defaultValue={starterCode}
+              value={code}
+              onChange={(val) => setCode(val || "")}
+              theme="vs-dark"
+              options={{
+                scrollBeyondLastLine: false,
+                minimap: { enabled: false },
+                lineNumbers: "on",
+                renderLineHighlight: "none",
+                automaticLayout: true,
+                padding: { top: 16 },
+                fontSize: 14,
+                fontFamily: "JetBrains Mono, monospace",
+              }}
+            />
+          </div>
+
+          {/* Test Results */}
+          <div className="bg-gray-800/50 rounded-lg overflow-auto flex flex-col p-4">
+            {results.length === 0 ? (
+              <div className="h-full flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-lg">Run your code to see the results</p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="text-lg font-semibold mb-4">Test Results</h2>
+                <div className="space-y-4">
+                  {results.map((res, idx) => (
+                    <div key={idx} className={`bg-gray-800 rounded-lg p-4 border-l-4 ${res.pass ? "border-green-500" : "border-red-500"}`}>
+                      <div className="flex items-center gap-2 mb-2">
+                        {res.pass ? (
+                          <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        ) : (
+                          <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        )}
+                        <span className={`font-medium ${res.pass ? "text-green-500" : "text-red-500"}`}>
+                          Test {idx + 1}: {res.pass ? "Passed" : "Failed"}
+                        </span>
+                      </div>
+                      <div className="font-mono text-sm space-y-2">
+                        <div>Input: <span className="text-blue-400">{JSON.stringify(res.input)}</span></div>
+                        <div>Expected: <span className="text-green-400">{JSON.stringify(res.expected)}</span></div>
+                        <div>Output: <span className={res.pass ? "text-green-400" : "text-red-400"}>{JSON.stringify(res.actual)}</span></div>
+                      </div>
+                      {res.logs.length > 0 && (
+                        <div className="mt-3 bg-gray-900 rounded-lg p-3">
+                          <div className="text-xs font-medium text-gray-400 mb-2">Console Output:</div>
+                          {res.logs.map((log, i) => (
+                            <div key={i} className="font-mono text-sm text-gray-300">{log}</div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

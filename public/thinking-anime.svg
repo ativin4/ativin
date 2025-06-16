@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="screen-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#48BB78;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#48BB78;stop-opacity:0"/>
+    </linearGradient>
+  </defs>
+  
+  <g transform="matrix(1.2, 0, 0, 1.2, -50, -50)">
+    <!-- Recliner - 3D perspective -->
+    <path d="M120 250 L380 250 L400 450 L100 450 Z" fill="#1A202C"/>
+    <path d="M150 200 Q250 180 350 200 L380 250 L120 250 Z" fill="#2D3748"/>
+    <path d="M180 150 Q250 120 320 150 L350 200 L150 200 Z" fill="#4A5568"/>
+    
+    <!-- Relaxed Developer Body -->
+    <g transform="translate(0, -20)">
+      <!-- Body reclined -->
+      <path d="M200 280 Q250 260 300 280 L320 400 L180 400 Z" fill="#4A5568"/>
+      
+      <!-- Neck -->
+      <path d="M235 240 Q250 235 265 240 L270 260 Q250 265 230 260 Z" fill="#FFB7B7"/>
+      
+      <!-- Head tilted back -->
+      <ellipse cx="250" cy="220" rx="40" ry="35" fill="#FFB7B7" transform="rotate(-15, 250, 220)"/>
+      
+      <!-- Eye Cover -->
+      <path d="M210 210 Q250 200 290 210 L285 225 Q250 215 215 225 Z" fill="#2D3748"/>
+      <rect x="205" y="210" width="90" height="20" rx="10" fill="#2D3748"/>
+      
+      <!-- Messy Hair -->
+      <path d="M210 190 Q250 170 290 190 Q270 160 250 155 Q230 160 210 190" fill="#2D3748"/>
+      
+      <!-- Laptop on Chest -->
+      <g transform="rotate(-25, 250, 320)">
+        <!-- Laptop Base -->
+        <rect x="200" y="300" width="100" height="60" rx="5" fill="#1A202C"/>
+        <!-- Screen -->
+        <rect x="195" y="245" width="110" height="60" rx="5" fill="#1A202C"/>
+        <rect x="200" y="250" width="100" height="50" fill="#4A5568"/>
+        
+        <!-- Screen Content -->
+        <g>
+          <rect x="205" y="255" width="90" height="40" fill="url(#screen-glow)"/>
+          <!-- Animated Code Lines -->
+          <g className="code-animation">
+            <rect x="210" y="260" width="30" height="2" fill="#48BB78">
+              <animate attributeName="width" values="30;70;30" dur="1s" repeatCount="indefinite"/>
+            </rect>
+            <rect x="210" y="270" width="40" height="2" fill="#48BB78">
+              <animate attributeName="width" values="40;80;40" dur="1s" repeatCount="indefinite" begin="0.2s"/>
+            </rect>
+            <rect x="210" y="280" width="50" height="2" fill="#48BB78">
+              <animate attributeName="width" values="50;60;50" dur="1s" repeatCount="indefinite" begin="0.4s"/>
+            </rect>
+          </g>
+        </g>
+      </g>
+    </g>
+    
+    <!-- Processing Speed Effects -->
+    <g className="processing-effects">
+      <circle cx="250" cy="320" r="80" fill="url(#screen-glow)" opacity="0.5">
+        <animate attributeName="opacity" values="0.5;0.8;0.5" dur="2s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    
+    <!-- Floating ZZZ with glow -->
+    <g className="floating-zzz">
+      <g transform="translate(300, 160)">
+        <text x="0" y="0" font-size="20" fill="#718096" opacity="0.8">
+          z
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite"/>
+        </text>
+      </g>
+      <g transform="translate(320, 140)">
+        <text x="0" y="0" font-size="25" fill="#718096" opacity="0.8">
+          Z
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" begin="0.6s"/>
+        </text>
+      </g>
+      <g transform="translate(345, 115)">
+        <text x="0" y="0" font-size="30" fill="#718096" opacity="0.8">
+          Z
+          <animate attributeName="opacity" values="0;0.8;0" dur="2s" repeatCount="indefinite" begin="1.2s"/>
+        </text>
+      </g>
+    </g>
+  </g>
+</svg>
