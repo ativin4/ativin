@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 interface Project {
   title: string;
   description: string;

@@ -4,8 +4,21 @@ interface Problem {
     functionName?: string;
     constructorName?: string;
     returnType: string;
+    testCases?: Array<{
+        input: unknown[];
+        expected: string | number | boolean | null | Array<number | null> | number[];
+    }>;
 }
-export const getStarterCode = (problem?: Problem) => {
+
+const primitiveTypes = ['bigint', 'number', 'string', 'boolean', 'object', 'string[]', 'number[]', 'boolean[]', 'object[]'] as const;
+type PrimitiveType = typeof primitiveTypes[number];
+
+interface RunUserCodeParams {
+    code: string;
+    problem?: Problem;
+}
+
+export const getStarterCode = (problem?: Problem): string => {
     if (!problem) {
         return '';
     }
@@ -26,20 +39,15 @@ export const getStarterCode = (problem?: Problem) => {
     problem.arguments?.forEach(arg => {
         starterCode += ` * @param {${arg.type}} ${arg.name}\n`;
     });
-    starterCode += ` * @return {${problem.returnType || 'any'}}\n`;
+    starterCode += ` * @return {${problem.returnType}}\n`;
     starterCode += " */\n";
-    starterCode += problem.functionName ? `var ${problem.functionName} = function(${problem.arguments?.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`
+    starterCode += problem.functionName
+        ? `var ${problem.functionName} = function(${problem.arguments?.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`
         : `function ${problem.constructorName}(${problem.arguments?.map(arg => arg.name).join(', ')}) {\n    // Write your code here\n}\n`;
     return starterCode;
 }
 
-const premitiveTypes = ['bigint', 'number', 'string', 'boolean', 'object', 'string[]', 'number[]', 'boolean[]', 'object[]'];
-
-interface RunUserCodeParams {
-    code: string;
-    problem?: Problem;
-}
-export const runUserCode = ({code, problem}: RunUserCodeParams) => {
+export const runUserCode = ({code, problem}: RunUserCodeParams): string => {
     if (!problem) {
         return '';
     }
@@ -69,13 +77,13 @@ export const runUserCode = ({code, problem}: RunUserCodeParams) => {
               ${code}
               if (typeof ${functionName} !== 'function') throw new Error('Function not found');
               const argumentTypes = ${JSON.stringify(args?.map(arg => arg.type))};
-              const premitiveTypes = ${JSON.stringify(premitiveTypes)};
+              const primitiveTypes = ${JSON.stringify(primitiveTypes)};
               const wrappedInput = input.map((arg, index) => {
-                if (premitiveTypes.includes(argumentTypes[index])) {
+                if (primitiveTypes.includes(argumentTypes[index])) {
                     return arg;
                 }
                 return new (eval(argumentTypes[index]))(arg);
               });
               return ${functionName}.apply(null, wrappedInput);
-            `
+            `;
 }

@@ -29,15 +29,24 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
     }
   }, [code, problem]);
 
-  const [results, setResults] = useState<{ pass: boolean; actual: any; expected: any; input: any; logs: any[]; }[]>([]);
+  // Define interface for test results
+  interface TestResult {
+    pass: boolean;
+    actual: string | number | boolean | null | Array<number | null> | number[];
+    expected: string | number | boolean | null | Array<number | null> | number[];
+    input: unknown[];
+    logs: string[];
+  }
+
+  const [results, setResults] = useState<TestResult[]>([]);
 
   const handleRun = () => {
     if (!problem?.testCases) return;
-    const newResults: { pass: boolean; actual: any; expected: any; input: any[]; logs: string[] }[] = [];
+    const newResults: TestResult[] = [];
 
     try {
       for (const test of problem.testCases) {
-        let actual;
+        let actual: TestResult['actual'];
         let logs: string[] = [];
         try {
           // Prepare the sandboxed function
@@ -47,11 +56,11 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
             runUserCode({code, problem})
           );
           // Capture console.log
-          const userConsole = { log: (...args: any[]) => logs.push(args.join(" ")) };
+          const userConsole = { log: (...args: unknown[]) => logs.push(args.join(" ")) };
           // Run the function with test input
           actual = runner(userConsole, test.input);
-        } catch (e: any) {
-          actual = e?.message || "Error";
+        } catch (e) {
+          actual = e instanceof Error ? e.message : "Error";
         }
         newResults.push({
           pass: actual === test.expected,

@@ -49,7 +49,7 @@ export default function HomePage() {
     const [playerPos, setPlayerPos] = useState(1);
 
     function rollDice() {
-        let roll = Math.floor(Math.random() * 6) + 1;
+        const roll = Math.floor(Math.random() * 6) + 1;
         let next = playerPos + roll;
         if (next > 100) next = 100;
         if (snakes[next]) next = snakes[next];

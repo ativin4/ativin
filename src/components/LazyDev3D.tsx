@@ -1,7 +1,7 @@
 import { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, PresentationControls, Environment, ContactShadows, Html } from '@react-three/drei'
-import { Vector3, Group, Mesh, PointLight } from 'three'
+import { PresentationControls, Environment, ContactShadows, Html } from '@react-three/drei'
+import { Group, PointLight } from 'three'
 import LoadingSpinner from './LoadingSpinner'
 
 function Model({ isProcessing }: { isProcessing: boolean }) {
@@ -165,7 +165,7 @@ function Model({ isProcessing }: { isProcessing: boolean }) {
       </Html>
       <Html position={[0.8, 2.8, 0]} transform occlude rotation={[0, Math.PI, 0]}>
         <div className="px-3 py-1.5 bg-gray-800/90 rounded-lg text-sm text-purple-400 whitespace-nowrap animate-float-fast backdrop-blur-sm" style={{ animationDelay: '0.4s' }}>
-          git commit -m "thinking..."
+          git commit -m &quot;thinking...&quot;
         </div>
       </Html>
     </group>
