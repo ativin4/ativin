@@ -1,21 +1,37 @@
 "use client";
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect, use, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 import dynamic from "next/dynamic";
 import problems from "@/data/problems.json";
 import { getStarterCode, runUserCode } from "./utils";
+
+const SANDBOX_ORIGIN =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3000/sandbox'
+    : 'https://coderunner-aj.vercel.app';
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 interface DSAProblemPageProps {
   params: Promise<{ id: string }>;
 }
+interface TestResult {
+  pass: boolean;
+  actual: string | number | boolean | null | Array<number | null> | number[];
+  expected: string | number | boolean | null | Array<number | null> | number[];
+  input: unknown[];
+  logs: string[];
+}
 
 const DSAProblemPage = (props: DSAProblemPageProps) => {
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const params = use(props.params);
   const problem = problems.find((p) => p.id === params.id);
   const starterCode = getStarterCode(problem)
-
+  const currentUid = useRef<string>('');
   const [code, setCode] = useState<string>("");
+  const [results, setResults] = useState<TestResult[]>([]);
+
   useEffect(() => {
     if (problem) {
       const saved = typeof window !== 'undefined' ? localStorage.getItem(`dsa_code_${problem.id}`) : null;
@@ -29,52 +45,38 @@ const DSAProblemPage = (props: DSAProblemPageProps) => {
     }
   }, [code, problem]);
 
-  // Define interface for test results
-  interface TestResult {
-    pass: boolean;
-    actual: string | number | boolean | null | Array<number | null> | number[];
-    expected: string | number | boolean | null | Array<number | null> | number[];
-    input: unknown[];
-    logs: string[];
-  }
+  useEffect(() => {
+    if (iframeRef.current) return; // already injected
+    const iframe = document.createElement('iframe');
+    iframe.sandbox.add('allow-scripts');
+    iframe.src = SANDBOX_ORIGIN + '/coderunner.html';
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    iframeRef.current = iframe;
+  }, []);
 
-  const [results, setResults] = useState<TestResult[]>([]);
+  // global message handler
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      // if (e.origin !== SANDBOX_ORIGIN) return;       // sanity check
+      const { uid, results } = e.data || {};
+      if (uid !== currentUid.current) return;                      // not our run
+      setResults(results || []);
+    }
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
 
   const handleRun = () => {
+    setResults([]);
     if (!problem?.testCases) return;
-    const newResults: TestResult[] = [];
+    const uid = uuidv4();
+    currentUid.current = uid;
 
-    try {
-      for (const test of problem.testCases) {
-        let actual: TestResult['actual'];
-        const logs: string[] = [];
-        try {
-          // Prepare the sandboxed function
-          const runner = new Function(
-            "console",
-            "input",
-            runUserCode({code, problem})
-          );
-          // Capture console.log
-          const userConsole = { log: (...args: unknown[]) => logs.push(args.join(" ")) };
-          // Run the function with test input
-          actual = runner(userConsole, test.input);
-        } catch (e) {
-          actual = e instanceof Error ? e.message : "Error";
-        }
-        newResults.push({
-          pass: actual === test.expected,
-          actual,
-          expected: test.expected,
-          input: test.input,
-          logs,
-        });
-      }
-      setResults(newResults);
-    } catch {
-      setResults([]);
-    }
-  };
+    // Use '*' as targetOrigin for local iframe communication
+    iframeRef.current?.contentWindow?.postMessage({ uid, code: runUserCode({code, problem}), testCases: problem.testCases }, '*');
+  }
 
   if (!problem) return <div className="p-6">Problem not found.</div>;
 
