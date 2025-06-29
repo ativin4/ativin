@@ -19,10 +19,10 @@ const BlogPage = ({ params }: { params: Promise<{ id: string }> }) => {
 
   return (
     <div className="flex min-h-screen bg-gray-950 text-gray-100">
-      <div className="fixed left-0 top-0 h-full z-30">
+      <div className="hidden md:block fixed left-0 top-0 h-full z-30">
         <Sidebar headings={headings} />
       </div>
-      <main className="ml-64 w-[70vw] max-w-[70vw] p-8 overflow-y-auto prose prose-invert dark:prose-invert mx-auto bg-transparent">
+      <main className="ml-0 md:ml-64 w-full md:w-[70vw] max-w-full md:max-w-[70vw] p-8 overflow-y-auto prose prose-invert dark:prose-invert mx-auto bg-transparent">
         <MDXRemote source={content} components={useMDXComponents({})} />
       </main>
     </div>
