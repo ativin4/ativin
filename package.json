@@ -15,11 +15,15 @@
     "@types/three": "^0.177.0",
     "autoprefixer": "^10.4.21",
     "framer-motion": "^12.16.0",
+    "gray-matter": "^4.0.3",
     "next": "15.3.3",
     "postcss": "^8.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.177.0"
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "three": "^0.177.0",
+    "uuidv4": "^6.2.13"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
