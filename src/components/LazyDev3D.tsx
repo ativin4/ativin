@@ -1,3 +1,4 @@
+"use client"
 import { useRef, Suspense } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { PresentationControls, Environment, ContactShadows, Html } from '@react-three/drei'

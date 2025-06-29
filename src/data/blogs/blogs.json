@@ -1,0 +1,11 @@
+[
+  {
+    "id": "accessible-high-performance-frontend-component",
+    "title": "Building Accessible and High-Performance Frontend Components: Best Practices & Real-World Solutions",
+    "description": "A comprehensive guide for advanced JavaScript engineers and accessibility experts covering production-ready patterns, common pitfalls, and real-world fixes for modern UI components.",
+    "date": "2025-06-28",
+    "readTime": "12 min read",
+    "tags": ["accessibility", "performance", "frontend", "JavaScript", "WCAG", "ARIA"],
+    "file": "accessible-high-performance-frontend-component.md"
+  }
+]

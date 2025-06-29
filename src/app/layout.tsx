@@ -4,8 +4,8 @@ import Layout from '@/components/Layout';
 import Navbar from '@/components/Navbar';
 
 export const metadata: Metadata = {
-  title: 'My Portfolio',
-  description: 'Welcome to my personal portfolio!',
+  title: 'Atishay Jain',
+  description: 'My playground for thoughts and about me!',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
