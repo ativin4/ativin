@@ -5,12 +5,13 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { extractHeadings } from './blogUtils';
 import Sidebar from '@/components/BlogSideBar';
 import { useMDXComponents } from '@/components/MdxComponents';
+import { use } from 'react';
 
 const getMarkdownPath = (id: string) =>
   path.join(process.cwd(), 'src', 'data', 'blogs', `${id}.md`);
 
-const BlogPage = async({ params }: { params: { id: string } }) => {
-  const { id } = await params;
+const BlogPage = ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = use(params);
   const MARKDOWN_PATH = getMarkdownPath(id);
   const markdown = fs.readFileSync(MARKDOWN_PATH, 'utf-8');
   const { content } = matter(markdown);

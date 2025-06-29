@@ -1,33 +1,39 @@
+import React, { ReactNode } from 'react';
 import type { MDXComponents } from 'mdx/types';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     h1: (props) => {
-      // Flatten children to string for id generation
-      const flatten = (children: React.ReactNode): string => {
+      const flatten = (children: ReactNode): string => {
         if (typeof children === 'string') return children;
         if (Array.isArray(children)) return children.map(flatten).join('');
-        if (typeof children === 'object' && children && 'props' in children) return flatten((children as any).props.children);
+        if (React.isValidElement(children)) {
+          return flatten((children as React.ReactElement<{ children?: ReactNode }>).props.children ?? '');
+        }
         return '';
       };
       const id = props.id || flatten(props.children).toLowerCase().replace(/\s+/g, '-');
       return <h1 {...props} id={id} className={"text-4xl font-bold mb-6 mt-8 scroll-mt-28 " + (props.className || "")}/>;
     },
     h2: (props) => {
-      const flatten = (children: React.ReactNode): string => {
+      const flatten = (children: ReactNode): string => {
         if (typeof children === 'string') return children;
         if (Array.isArray(children)) return children.map(flatten).join('');
-        if (typeof children === 'object' && children && 'props' in children) return flatten((children as any).props.children);
+        if (React.isValidElement(children)) {
+          return flatten((children as React.ReactElement<{ children?: ReactNode }>).props.children ?? '');
+        }
         return '';
       };
       const id = props.id || flatten(props.children).toLowerCase().replace(/\s+/g, '-');
       return <h2 {...props} id={id} className={"text-2xl font-semibold mb-4 mt-6 scroll-mt-28 " + (props.className || "")}/>;
     },
     h3: (props) => {
-      const flatten = (children: React.ReactNode): string => {
+      const flatten = (children: ReactNode): string => {
         if (typeof children === 'string') return children;
         if (Array.isArray(children)) return children.map(flatten).join('');
-        if (typeof children === 'object' && children && 'props' in children) return flatten((children as any).props.children);
+        if (React.isValidElement(children)) {
+          return flatten((children as React.ReactElement<{ children?: ReactNode }>).props.children ?? '');
+        }
         return '';
       };
       const id = props.id || flatten(props.children).toLowerCase().replace(/\s+/g, '-');
