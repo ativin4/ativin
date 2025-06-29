@@ -9,8 +9,8 @@ import { useMDXComponents } from '@/components/MdxComponents';
 const getMarkdownPath = (id: string) =>
   path.join(process.cwd(), 'src', 'data', 'blogs', `${id}.md`);
 
-export default async function MarkdownViewerPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+const BlogPage = async({ params }: { params: { id: string } }) => {
+  const { id } = await params;
   const MARKDOWN_PATH = getMarkdownPath(id);
   const markdown = fs.readFileSync(MARKDOWN_PATH, 'utf-8');
   const { content } = matter(markdown);
@@ -27,3 +27,5 @@ export default async function MarkdownViewerPage({ params }: { params: { id: str
     </div>
   );
 }
+
+export default BlogPage;

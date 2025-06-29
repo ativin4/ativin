@@ -26,7 +26,7 @@ export default function DSAProblemsListPage() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 py-8">
+        <div className="min-h-screen bg-gray-900 py-6 my-16">
             <div className="max-w-6xl mx-auto px-4">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-white mb-2">DSA Problems</h1>
