@@ -1,54 +1,5 @@
 <!doctype html>
 <meta charset="utf-8" />
 <!-- THE POWER OF THE SANDBOX -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
-<script>
-  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-
-  self.onmessage = async ({ data }) => {
-    const { uid, code, testCases } = data;
-    const newResults = [];
-    if (problem?.testCases) {
-        try {
-            for (const test of problem.testCases) {
-                let actual;
-                const logs = [];
-                try {
-                // Prepare the sandboxed function
-                const runner = new Function(
-                    "console",
-                    "input",
-                    runUserCode({code, problem})
-                );
-                // Capture console.log
-                const userConsole = { log: (...args) => logs.push(args.join(" ")) };
-                // Run the function with test input
-                actual = runner(userConsole, test.input);
-                } catch (e) {
-                actual = e instanceof Error ? e.message : "Error";
-                }
-                newResults.push({
-                    pass: actual === test.expected,
-                    actual,
-                    expected: test.expected,
-                    input: test.input,
-                    logs,
-                });
-            }
-        } catch {
-            // Handle any unexpected errors in the test execution
-            newResults.push({
-                pass: false,
-                actual: "Error during test execution",
-                expected: "N/A",
-                input: "N/A",
-                logs: []
-            });
-        }
-    };
-
-    
-    // Always post back to parent
-    parent.postMessage({ uid, results }, '*');
-  };
-</script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-eval';">
+<script src="./run.js"></script>
