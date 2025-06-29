@@ -6,6 +6,9 @@ import Navbar from '@/components/Navbar';
 export const metadata: Metadata = {
   title: 'Atishay Jain',
   description: 'My playground for thoughts and about me!',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
