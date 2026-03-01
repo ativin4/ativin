@@ -19,11 +19,10 @@ const LazyDev3D = dynamic(() => import('@/components/LazyDev3D'), {
 
 type SectionProps = {
   id: string;
-  bg: string;
   children: React.ReactNode;
 };
 
-const Section = ({ id, bg, children }: SectionProps) => (
+const Section = ({ id, children }: SectionProps) => (
   <section
     id={id}
     className={`bg-[#18181b] snap-start flex items-center justify-center h-screen w-screen overflow-hidden`}
@@ -94,7 +93,7 @@ export default function Home() {
 
       <main className="scroll-smooth snap-y snap-mandatory leading-relaxed font-sans text-gray-100 bg-[#18181b] min-h-screen overflow-x-hidden">
         {/* Intro */}
-        <Section id="intro" bg="bg-gradient-to-b from-teal-500 to-cyan-700 text-white">
+        <Section id="intro">
           <div className="text-center space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Atishay&nbsp;Jain</h1>
             <p className="text-lg md:text-2xl max-w-2xl mx-auto">
@@ -105,7 +104,7 @@ export default function Home() {
         </Section>
 
         {/* About me, capabilities & visual flare */}
-        <Section id="about" bg="bg-gradient-to-b from-purple-600 to-indigo-800 text-white">
+        <Section id="about">
           <div className="md:flex md:items-center md:space-x-12">
             <div className="md:w-1/2 space-y-6">
               <h2 className="text-4xl md:text-5xl font-semibold">About Me</h2>
@@ -131,7 +130,7 @@ export default function Home() {
         </Section>
 
         {/* Moveworks Experience */}
-        <Section id="moveworks" bg="bg-neutral-900 text-white">
+        <Section id="moveworks">
           <div className="space-y-8">
             <h2 className="text-4xl md:text-5xl font-semibold">Moveworks</h2>
             <p className="opacity-80"> Software Engineer • Bengaluru • May 2024 – Present</p>
@@ -166,7 +165,7 @@ export default function Home() {
         </Section>
 
         {/* Myntra Experience */}
-        <Section id="myntra" bg="bg-neutral-900 text-white">
+        <Section id="myntra">
           <div className="space-y-8">
             <h2 className="text-4xl md:text-5xl font-semibold">Myntra</h2>
             <p className="opacity-80">Software Engineer • Bengaluru • Jun 2021 – May 2024</p>
@@ -199,7 +198,7 @@ export default function Home() {
         </Section>
 
         {/* Projects */}
-        <Section id="projects" bg="bg-neutral-900 text-white">
+        <Section id="projects">
           <div className="space-y-8">
             <h2 className="text-4xl md:text-5xl font-semibold">Selected Projects</h2>
             <ul className="list-disc pl-6 space-y-3 text-lg md:text-xl">
@@ -211,7 +210,7 @@ export default function Home() {
         </Section>
 
         {/* Contact */}
-        <Section id="contact" bg="bg-neutral-900 text-gray-800">
+        <Section id="contact">
           <div className="text-center space-y-6">
             <h2 className="text-4xl md:text-6xl font-semibold">Let’s build something!</h2>
             <p className="text-lg md:text-2xl">
