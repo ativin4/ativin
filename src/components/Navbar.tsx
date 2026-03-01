@@ -11,6 +11,12 @@ export default function Navbar() {
                     >
                         Home
                     </Link>
+                    <a
+                        href="#about"
+                        className="text-gray-200 font-semibold hover:text-green-400 transition-colors duration-200"
+                    >
+                        About
+                    </a>
                     <Link
                         href="/blogs"
                         className="text-gray-200 font-semibold hover:text-green-400 transition-colors duration-200"
