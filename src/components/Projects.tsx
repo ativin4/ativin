@@ -1,3 +1,6 @@
+"use client";
+import { motion } from 'framer-motion';
+
 interface Project {
   title: string;
   description: string;
@@ -16,8 +19,6 @@ const projects: Project[] = [
   },
   // Add more projects here
 ];
-
-import { motion } from 'framer-motion';
 
 const containerVariants = {
   hidden: {},
