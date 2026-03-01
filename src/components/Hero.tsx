@@ -1,9 +1,9 @@
 "use client";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Lenis from "@studio-freight/lenis";
 import { motion } from "framer-motion";
 import dynamic from 'next/dynamic';
-import { useEffect } from "react";
 
 // lazy‑load the 3D developer scene only on the client
 const LazyDev3D = dynamic(() => import('@/components/LazyDev3D'), {
@@ -22,18 +22,36 @@ type SectionProps = {
   children: React.ReactNode;
 };
 
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.15,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+};
+
 const Section = ({ id, children }: SectionProps) => (
   <section
     id={id}
     className={`bg-[#18181b] snap-start flex items-center justify-center h-screen w-screen overflow-hidden`}
   >
     <motion.div
-      initial={{ opacity: 0, y: 60 }}
-      whileInView={{ opacity: 1, y: 0, transition: { duration: 1 } }}
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="show"
       viewport={{ once: true, amount: 0.6 }}
       className="px-6 md:px-24 w-full max-w-5xl"
     >
-      {children}
+      {/** wrap each direct child for staggered entrance */}
+      {React.Children.map(children, (child) => (
+        <motion.div variants={itemVariants}>{child}</motion.div>
+      ))}
     </motion.div>
   </section>
 );
