@@ -39,7 +39,7 @@ const itemVariants = {
 const Section = ({ id, children }: SectionProps) => (
   <section
     id={id}
-    className={`bg-[#18181b] snap-start flex items-center justify-center h-screen w-screen overflow-hidden`}
+    className={`bg-[#18181b] flex items-center justify-center min-h-screen w-screen overflow-hidden py-20`}
   >
     <motion.div
       variants={containerVariants}
@@ -56,6 +56,81 @@ const Section = ({ id, children }: SectionProps) => (
   </section>
 );
 
+const moveworksExperience = [
+  {
+    title: "Built a customer-facing LLM troubleshooting/explainability platform:",
+    details: [
+      "User intent detection, query tracking, plugin selection logic",
+      "Plugin execution steps, intermediate outputs, citations grounding",
+      "End‑to‑end reasoning trace per chat turn and human-readable UI flows",
+      "Modeled multi-step AI execution with partial failures, fallbacks, missing citations",
+    ],
+  },
+  {
+    title: "Designed and implemented Entity Catalog platform:",
+    details: [
+      "UI/APIs for add/update/delete entities with org‑scoped isolation",
+      "Metadata used for intent detection & plugin routing",
+      "Prefix-based cross-catalog search and single‑source migration",
+      "Migrated consumption from S3 dumps to central service, eliminating delays and Moveflow dependency, enabling same‑day availability",
+    ],
+  },
+  {
+    title: "Created internal LLM annotation/evaluation tool:",
+    details: [
+      "Annotated logs with answers, synthetic replacements, tags",
+      "Normalized YAML logs to structured JSON and rendered chat-style conversations",
+      "Solved complex span-indexing across nested outputs, 100% test coverage including UI hooks",
+    ],
+  },
+  {
+    title: "Developed Monaco-based DSL editor platform with ANTLR parsers, real-time validation, context-aware suggestions, test-run workflows and reusable component design.",
+    details: [],
+  },
+  {
+    title: "Built frontend UI for content ingestion filesystem with hierarchical navigation, lazy loading, conversation modes and Google Drive BFF integration; achieved full frontend test coverage.",
+    details: [],
+  },
+];
+
+const myntraExperience = [
+  {
+    title: "Rebuilt Seller Coupon Service UI (micro‑frontend):",
+    details: [
+      "Seller opt‑in/opt‑out workflows with async polling",
+      "Detailed coupon pages, recommendations and multi‑action flows",
+      "Delivered end‑to‑end in 30 days; supported ~2,500 sellers",
+    ],
+  },
+  {
+    title: "Led Seller Onboarding Flow Revamp:",
+    details: [
+      "Wizard-based onboarding with GST, bank and address validation (Digio APIs)",
+      "Used GST data for pin-code validation; internal review UI for parallel verification",
+      "Reduced TAT from 45 to 7 days",
+    ],
+  },
+  {
+    title: "Built compliance-critical Agreement Service:",
+    details: [
+      "Dynamic PDF generation, workflow tracking across partners",
+      "Enforced compliance with auditability and post-signature orchestration",
+    ],
+  },
+  {
+    title: "Implemented secure in-app PDF reader to enforce read‑completion tracking (scroll/last‑page visibility).",
+    details: [],
+  },
+  {
+    title: "Migrated backend service from Java Spring to Spring Boot, improving config management while maintaining compatibility.",
+    details: [],
+  },
+  {
+    title: "Created internal data copy tool to transfer org data with FK integrity using S3 staging.",
+    details: [],
+  },
+];
+
 export default function Home() {
   // Initialize Lenis once on mount for buttery‑smooth scrolling
   useEffect(() => {
@@ -64,32 +139,7 @@ export default function Home() {
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
-    // replicate fast full‑page scrolling behaviour seen on hikeys1977.com
-    const sections = Array.from(document.querySelectorAll('section')) as HTMLElement[];
-    const snapToSection = (deltaY: number) => {
-      const current = window.scrollY;
-      let target: HTMLElement | null = null;
-      if (deltaY > 0) {
-        target = sections.find((s) => s.offsetTop > current + 1) || sections[sections.length - 1];
-      } else {
-        const prev = sections
-          .slice()
-          .reverse()
-          .find((s) => s.offsetTop < current - 1);
-        target = prev || sections[0];
-      }
-      if (target) {
-        lenis.scrollTo(target, { duration: 1.2 });
-      }
-    };
-
-    const wheelHandler = (e: WheelEvent) => {
-      if (Math.abs(e.deltaY) < 1) return;
-      e.preventDefault();
-      snapToSection(e.deltaY);
-    };
-
-    window.addEventListener('wheel', wheelHandler, { passive: false });
+    // Removed manual snap logic to allow for smooth sticky scrolling
 
     function raf(time: number) {
       lenis.raf(time);
@@ -98,7 +148,6 @@ export default function Home() {
     requestAnimationFrame(raf);
 
     return () => {
-      window.removeEventListener('wheel', wheelHandler);
       lenis.destroy();
     };
   }, []);
@@ -109,7 +158,7 @@ export default function Home() {
         <title>Atishay Jain | Portfolio</title>
       </Head>
 
-      <main className="scroll-smooth snap-y snap-mandatory leading-relaxed font-sans text-gray-100 bg-[#18181b] min-h-screen overflow-x-hidden">
+      <main className="scroll-smooth leading-relaxed font-sans text-gray-100 bg-[#18181b] min-h-screen overflow-x-hidden">
         {/* Intro */}
         <Section id="intro">
           <div className="text-center space-y-6">
@@ -148,72 +197,68 @@ export default function Home() {
         </Section>
 
         {/* Moveworks Experience */}
-        <Section id="moveworks">
-          <div className="space-y-8">
-            <h2 className="text-4xl md:text-5xl font-semibold">Moveworks</h2>
-            <p className="opacity-80"> Software Engineer • Bengaluru • May 2024 – Present</p>
-            <ul className="list-disc pl-6 space-y-3 text-lg md:text-xl">
-              <li>Built a customer-facing LLM troubleshooting/explainability platform:
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>User intent detection, query tracking, plugin selection logic</li>
-                  <li>Plugin execution steps, intermediate outputs, citations grounding</li>
-                  <li>End‑to‑end reasoning trace per chat turn and human-readable UI flows</li>
-                  <li>Modeled multi-step AI execution with partial failures, fallbacks, missing citations</li>
-                </ul>
-              </li>
-              <li>Designed and implemented Entity Catalog platform:
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>UI/APIs for add/update/delete entities with org‑scoped isolation</li>
-                  <li>Metadata used for intent detection & plugin routing</li>
-                  <li>Prefix-based cross-catalog search and single‑source migration</li>
-                  <li>Migrated consumption from S3 dumps to central service, eliminating delays and Moveflow dependency, enabling same‑day availability</li>
-                </ul>
-              </li>
-              <li>Created internal LLM annotation/evaluation tool:
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Annotated logs with answers, synthetic replacements, tags</li>
-                  <li>Normalized YAML logs to structured JSON and rendered chat-style conversations</li>
-                  <li>Solved complex span-indexing across nested outputs, 100% test coverage including UI hooks</li>
-                </ul>
-              </li>
-              <li>Developed Monaco-based DSL editor platform with ANTLR parsers, real-time validation, context-aware suggestions, test-run workflows and reusable component design.</li>
-              <li>Built frontend UI for content ingestion filesystem with hierarchical navigation, lazy loading, conversation modes and Google Drive BFF integration; achieved full frontend test coverage.</li>
-            </ul>
+        <section id="moveworks" className="w-full py-24 bg-[#18181b]">
+          <div className="max-w-5xl mx-auto px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div className="md:sticky top-32 h-fit">
+              <h2 className="text-4xl md:text-5xl font-semibold mb-2">Moveworks</h2>
+              <p className="opacity-80 text-lg">Software Engineer</p>
+              <p className="opacity-60">Bengaluru • May 2024 – Present</p>
+            </div>
+            
+            <div className="space-y-16">
+              {moveworksExperience.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  <h3 className="text-xl md:text-2xl font-medium mb-3 leading-snug">{item.title}</h3>
+                  {item.details.length > 0 && (
+                    <ul className="list-disc pl-5 space-y-2 text-gray-400 text-base md:text-lg">
+                      {item.details.map((detail, i) => (
+                        <li key={i}>{detail}</li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </Section>
+        </section>
 
         {/* Myntra Experience */}
-        <Section id="myntra">
-          <div className="space-y-8">
-            <h2 className="text-4xl md:text-5xl font-semibold">Myntra</h2>
-            <p className="opacity-80">Software Engineer • Bengaluru • Jun 2021 – May 2024</p>
-            <ul className="list-disc pl-6 space-y-3 text-lg md:text-xl">
-              <li>Rebuilt Seller Coupon Service UI (micro‑frontend):
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Seller opt‑in/opt‑out workflows with async polling</li>
-                  <li>Detailed coupon pages, recommendations and multi‑action flows</li>
-                  <li>Delivered end‑to‑end in 30 days; supported ~2,500 sellers</li>
-                </ul>
-              </li>
-              <li>Led Seller Onboarding Flow Revamp:
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Wizard-based onboarding with GST, bank and address validation (Digio APIs)</li>
-                  <li>Used GST data for pin-code validation; internal review UI for parallel verification</li>
-                  <li>Reduced TAT from 45 to 7 days</li>
-                </ul>
-              </li>
-              <li>Built compliance-critical Agreement Service:
-                <ul className="list-disc pl-6 space-y-2">
-                  <li>Dynamic PDF generation, workflow tracking across partners</li>
-                  <li>Enforced compliance with auditability and post-signature orchestration</li>
-                </ul>
-              </li>
-              <li>Implemented secure in-app PDF reader to enforce read‑completion tracking (scroll/last‑page visibility).</li>
-              <li>Migrated backend service from Java Spring to Spring Boot, improving config management while maintaining compatibility.</li>
-              <li>Created internal data copy tool to transfer org data with FK integrity using S3 staging.</li>
-            </ul>
+        <section id="myntra" className="w-full py-24 bg-[#18181b]">
+          <div className="max-w-5xl mx-auto px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+            <div className="md:sticky top-32 h-fit">
+              <h2 className="text-4xl md:text-5xl font-semibold mb-2">Myntra</h2>
+              <p className="opacity-80 text-lg">Software Engineer</p>
+              <p className="opacity-60">Bengaluru • Jun 2021 – May 2024</p>
+            </div>
+            
+            <div className="space-y-16">
+              {myntraExperience.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  <h3 className="text-xl md:text-2xl font-medium mb-3 leading-snug">{item.title}</h3>
+                  {item.details.length > 0 && (
+                    <ul className="list-disc pl-5 space-y-2 text-gray-400 text-base md:text-lg">
+                      {item.details.map((detail, i) => (
+                        <li key={i}>{detail}</li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </Section>
+        </section>
 
         {/* Projects */}
         <Section id="projects">
