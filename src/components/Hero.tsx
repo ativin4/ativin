@@ -39,7 +39,7 @@ const itemVariants = {
 const Section = ({ id, children }: SectionProps) => (
   <section
     id={id}
-    className={`bg-[#18181b] flex items-center justify-center min-h-screen w-screen overflow-hidden py-20`}
+    className={`bg-[#18181b] flex items-center justify-center min-h-screen w-full overflow-hidden py-20`}
   >
     <motion.div
       variants={containerVariants}
@@ -131,6 +131,35 @@ const myntraExperience = [
   },
 ];
 
+const projects = [
+  {
+    title: "DSA Problem‑Solving Web App",
+    link: "/tools/dsaProblems",
+    details: [
+      "Built a LeetCode-style platform with Next.js and Monaco Editor.",
+      "Integrated JavaScript sandbox for secure code execution.",
+      "Features: Test case runner, local storage persistence."
+    ]
+  },
+  {
+    title: "Personal Portfolio & Blog",
+    link: "https://atin.dev",
+    details: [
+      "Interactive 3D elements using Three.js and React Three Fiber.",
+      "Performance optimized with Next.js App Router.",
+      "Custom MDX blog engine with syntax highlighting."
+    ]
+  },
+  {
+    title: "React Template Editor",
+    details: [
+      "Visual editor for creating dynamic PDF templates.",
+      "Real-time preview and client-side generation.",
+      "Used for generating invoices and reports."
+    ]
+  }
+];
+
 export default function Home() {
   // Initialize Lenis once on mount for buttery‑smooth scrolling
   useEffect(() => {
@@ -158,7 +187,7 @@ export default function Home() {
         <title>Atishay Jain | Portfolio</title>
       </Head>
 
-      <main className="scroll-smooth leading-relaxed font-sans text-gray-100 bg-[#18181b] min-h-screen overflow-x-hidden">
+      <main className="scroll-smooth leading-relaxed font-sans text-gray-100 bg-[#18181b] min-h-screen">
         {/* Intro */}
         <Section id="intro">
           <div className="text-center space-y-6">
@@ -176,18 +205,16 @@ export default function Home() {
             <div className="md:w-1/2 space-y-6">
               <h2 className="text-4xl md:text-5xl font-semibold">About Me</h2>
               <p className="text-lg md:text-xl">
-                I build interactive experiences and powerful tools for the web. My
-                code is influenced by clean abstractions, accessible design, and
-                a love of subtle motion & 3D. On a typical day I might be
-                debugging a real‑time search index, writing a custom DSL parser,
-                or spinning up a new microservice in Go.
+                I am a Fullstack AI Engineer focused on building comprehensive web applications.
+                With a strong foundation in frontend development and backend systems, I have
+                recently expanded into integrating Large Language Models (LLMs) to create
+                intelligent, context-aware user experiences.
               </p>
               <ul className="list-disc pl-6 space-y-2 text-lg md:text-xl">
-                <li>React & TypeScript with Framer Motion for expressive UIs</li>
-                <li>WebGL / three‑js 3D scenes and interactive canvas experiences</li>
-                <li>Backend APIs in Python/Django, Go or Node with clean testing</li>
+                <li>Frontend excellence with React, TypeScript, and modern UI libraries</li>
+                <li>Backend system design using Python/Django, Go, or Node.js</li>
+                <li>LLM integration and building AI-enhanced applications</li>
                 <li>DevOps: Docker, Kubernetes, CI/CD pipelines and cloud infra</li>
-                <li>Fast learner who thrives in collaborative teams and code reviews</li>
               </ul>
             </div>
             <div className="md:w-1/2 h-64 md:h-96">
@@ -197,15 +224,20 @@ export default function Home() {
         </Section>
 
         {/* Moveworks Experience */}
-        <section id="moveworks" className="w-full py-24 bg-[#18181b]">
-          <div className="max-w-5xl mx-auto px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            <div className="md:sticky top-32 h-fit">
+        <section id="moveworks" className="relative w-full py-24 bg-[#0f172a]">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] opacity-[0.03] blur-sm">
+              <img src="/moveworks.png" alt="" className="w-full" />
+            </div>
+          </div>
+          <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+            <div className="sticky top-24 z-20 bg-[#0f172a]/95 backdrop-blur py-8 mb-12 border-b border-slate-800/50">
               <h2 className="text-4xl md:text-5xl font-semibold mb-2">Moveworks</h2>
               <p className="opacity-80 text-lg">Software Engineer</p>
               <p className="opacity-60">Bengaluru • May 2024 – Present</p>
             </div>
             
-            <div className="space-y-16">
+            <div className="space-y-32 pb-24">
               {moveworksExperience.map((item, index) => (
                 <motion.div
                   key={index}
@@ -229,15 +261,20 @@ export default function Home() {
         </section>
 
         {/* Myntra Experience */}
-        <section id="myntra" className="w-full py-24 bg-[#18181b]">
-          <div className="max-w-5xl mx-auto px-6 md:px-24 grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-            <div className="md:sticky top-32 h-fit">
+        <section id="myntra" className="relative w-full py-24 bg-[#0f172a]">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] opacity-[0.03] blur-sm">
+              <img src="/myntra.png" alt="" className="w-full" />
+            </div>
+          </div>
+          <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+            <div className="sticky top-24 z-20 bg-[#0f172a]/95 backdrop-blur py-8 mb-12 border-b border-slate-800/50">
               <h2 className="text-4xl md:text-5xl font-semibold mb-2">Myntra</h2>
               <p className="opacity-80 text-lg">Software Engineer</p>
               <p className="opacity-60">Bengaluru • Jun 2021 – May 2024</p>
             </div>
             
-            <div className="space-y-16">
+            <div className="space-y-32 pb-24">
               {myntraExperience.map((item, index) => (
                 <motion.div
                   key={index}
@@ -261,16 +298,41 @@ export default function Home() {
         </section>
 
         {/* Projects */}
-        <Section id="projects">
-          <div className="space-y-8">
-            <h2 className="text-4xl md:text-5xl font-semibold">Selected Projects</h2>
-            <ul className="list-disc pl-6 space-y-3 text-lg md:text-xl">
-              <li>DSA Problem‑Solving Web App (Next.js, Monaco, JS sandbox).</li>
-              <li>Personal Portfolio & Blog – <a href="https://atin.dev" className="underline font-medium">atin.dev</a>.</li>
-              <li>React Template Editor → PDF generator.</li>
-            </ul>
+        <section id="projects" className="relative w-full py-24 bg-[#0f172a]">
+          <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12">
+            <div className="sticky top-24 z-20 bg-[#0f172a]/95 backdrop-blur py-8 mb-12 border-b border-slate-800/50">
+              <h2 className="text-4xl md:text-5xl font-semibold mb-2">Selected Projects</h2>
+              <p className="opacity-80 text-lg">Personal & Open Source</p>
+            </div>
+            
+            <div className="space-y-32 pb-24">
+              {projects.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, margin: "-20% 0px -20% 0px" }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                >
+                  <h3 className="text-xl md:text-2xl font-medium mb-3 leading-snug">
+                    {item.link ? (
+                      <a href={item.link} className="hover:text-blue-400 transition-colors">{item.title}</a>
+                    ) : (
+                      item.title
+                    )}
+                  </h3>
+                  {item.details.length > 0 && (
+                    <ul className="list-disc pl-5 space-y-2 text-gray-400 text-base md:text-lg">
+                      {item.details.map((detail, i) => (
+                        <li key={i}>{detail}</li>
+                      ))}
+                    </ul>
+                  )}
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </Section>
+        </section>
 
         {/* Contact */}
         <Section id="contact">
